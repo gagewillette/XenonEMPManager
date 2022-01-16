@@ -24,3 +24,7 @@ hs_err_pid*
 
 #Photoshop raw files for logo, not very important
 PSDs 
+
+#Contains all .class files
+target/
+
