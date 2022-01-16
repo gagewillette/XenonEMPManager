@@ -1,43 +1,55 @@
 package me.GageWillette.XenonEMPManager.Manager;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.*;  //REMOVE ON PRODUCTION BUILD THIS IS SO BAD FOR MEMEMEMEMEMMEORY
 
 import ij.IJ;
 import ij.ImagePlus;
+import me.GageWillette.XenonEMPManager.Utils.SQL;
 
 public class ManagerSplash extends JFrame{
 
 	JButton exit = new JButton("Exit");
 
-	
-	Graphics graphics = getGraphics();
-	public ManagerSplash()
-	{
-		
+	private Connection con = this.getCon();
+
+	//Graphics graphics = getGraphics();
+	public ManagerSplash() {
+
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {e.printStackTrace();}
+
+		this.getLogins();
+
+		this.setBackground(Color.BLACK);
+
 		addExitButton();
 		
-		setBackground();
-		
 		setLayouts();
+
+
 	}
-	
-	
+
 	private void setLayouts()
 	{
 		this.setLayout(null);
-		
+
 		this.setAlwaysOnTop(true);
-		
+
 		this.setExtendedState(MAXIMIZED_BOTH);
-		
+
 		this.setUndecorated(true);
-		
+
 		this.setVisible(true);
 	}
 	
@@ -51,24 +63,6 @@ public class ManagerSplash extends JFrame{
 		
 		this.add(exit);
 	}
-	
-	private void setBackground()
-	{	
-		ImagePlus imp = IJ.openImage("E:\\Users\\gagew\\XenonEMPManager\\src\\main\\java\\logo.png");
-		
-		Image img = imp.getImage();
-		
-		JLabel picLabel = new JLabel(new ImageIcon(img));
-		
-		picLabel.setBounds(5, 5, img.getWidth(picLabel), img.getHeight(picLabel));
-		
-		picLabel.setVisible(true);
-		
-		this.add(picLabel);
-		
-	}
-	
-	
 	private class ExitButtonListener implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
@@ -76,5 +70,38 @@ public class ManagerSplash extends JFrame{
 			
 		}
 	}
-	
+
+	private static Connection getCon()
+	{
+		Connection temp = null;
+
+		try {
+			temp = SQL.getConnection("admin", "admin", "10.0.0.39", "5353");
+		} catch (SQLException e) {e.printStackTrace();}
+
+		return temp;
+	}
+
+	private HashMap getLogins()
+	{
+		HashMap<Integer, String> logins = new HashMap<Integer, String>();
+
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM xenon.logins");
+
+			while (rs.next())
+			{
+				System.out.println(rs.getInt(1) + " " + rs.getInt(2) + " " + rs.getString(3));
+
+				logins.put(rs.getInt(2) , rs.getString(3));
+			}
+
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			System.exit(1);
+		}
+		return logins;
+	}
 }
