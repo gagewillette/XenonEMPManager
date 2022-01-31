@@ -7,7 +7,7 @@ import java.io.File;
 
 public class getImage
 {
-    public Image getImage(String path)
+    public static Image getImage(String path)
     {
         Image img = null;
         try {

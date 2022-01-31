@@ -13,14 +13,9 @@ public class LoginListener implements ActionListener {
         String username = ManagerSplash.username.getText();
         String password = String.valueOf(ManagerSplash.pass.getPassword());
 
-        if (username.equals("gagewillette") && password.equals("manager"))
+        if (username.equals("") && password.equals(""))
         {
             frame.setVisible(false);
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
             new ManagerMain();
             return;
         }
