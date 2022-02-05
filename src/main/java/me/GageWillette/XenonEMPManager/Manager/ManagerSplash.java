@@ -30,7 +30,7 @@ public class ManagerSplash
 
                 frame = new JFrame("Manager Login");
                 frame.setLayout(null);
-                frame.setResizable(false);
+                //frame.setResizable(false);     UNCOMMENT OUT FOR PROD
                 frame.getContentPane().setBackground(gray);
                 frame.setExtendedState(Frame.MAXIMIZED_BOTH);
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
