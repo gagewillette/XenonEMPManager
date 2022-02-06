@@ -7,13 +7,12 @@ public class Employee
     private String firstName;
     private String lastName;
     private String fullName;
-    private Date bday;
-    private int ssn;
+    private String bday;
+    private long ssn;
     private boolean canServeAlc;
     private int ageInYears;
 
-
-    public Employee (String firstName , String lastName , Date bday , int ssn)
+    public Employee (String firstName , String lastName , String bday , long ssn)
     {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -48,7 +47,10 @@ public class Employee
     static getEmployeesThatCanServeAlc
      */
 
-
+    public String toString()
+    {
+        String str = firstName + " " + lastName; return str;
+    }
 
 
 }

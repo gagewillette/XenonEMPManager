@@ -1,17 +1,29 @@
 package me.GageWillette.XenonEMPManager.Manager;
 
 
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
+import com.google.common.base.Stopwatch;
 import me.GageWillette.XenonEMPManager.Utils.Colors;
 import me.GageWillette.XenonEMPManager.Utils.Employee;
+import me.GageWillette.XenonEMPManager.Utils.FireDB;
 import me.GageWillette.XenonEMPManager.Utils.SubFonts;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Array;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ManagerMain
 {
+    private static Firestore db;
     public static JFrame frame = null;
     static Font buttonFont = SubFonts.getFont(SubFonts.subFonts.ALESAND);
     static JButton sales = new JButton("    Sales");
@@ -20,6 +32,8 @@ public class ManagerMain
     static ImageIcon salesIcon = new ImageIcon("resources/outline_trending_up_black_24dp.png");
     static JLabel salesLabel = new JLabel(salesIcon);
     private JRadioButton Balls;
+    private ArrayList<Employee> emps = new ArrayList<Employee>();
+
 
     public ManagerMain()
     {
@@ -28,6 +42,10 @@ public class ManagerMain
         frame.setLayout(null);
         frame.setIconImage(me.GageWillette.XenonEMPManager.Utils.getImage.getImage("resources/crown.png"));
         frame.getContentPane().setBackground(Colors.bkg);
+
+        try {
+            db = FireDB.setupDB();
+        } catch (Exception e) {e.printStackTrace();}
 
         setButtons();
 
@@ -50,6 +68,11 @@ public class ManagerMain
         employee.setBounds(390 , 30 , 150 , 50);
         employee.setBackground(Colors.employee);
         employee.addActionListener(new employeeListener());
+
+
+        try {
+            emps = getEmployees();
+        } catch (Exception ex) { ex.printStackTrace(); }
 
 
         frame.add(sales);
@@ -90,11 +113,31 @@ public class ManagerMain
 
             JList empList = new JList();
 
-
+            for (Employee cur : emps)
+            {
+                System.out.println(cur.toString());
+            }
             employeeList.setVisible(true);
         }
     }
 
 
+    private ArrayList<Employee> getEmployees() throws ExecutionException, InterruptedException {
+        ArrayList<Employee> emps = new ArrayList<Employee>();
 
+        // asynchronously retrieve all users
+        ApiFuture<QuerySnapshot> query = db.collection("employees").get();
+        // ...
+        // query.get() blocks on response
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        for (QueryDocumentSnapshot document : documents) {
+
+            Employee cur = new Employee(document.getString("first") , document.getString("last")
+                    , document.getString("bday") , document.getLong("ssn"));
+            emps.add(cur);
+        }
+
+        return emps;
+    }
 }
