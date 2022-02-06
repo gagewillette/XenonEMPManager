@@ -9,7 +9,7 @@ public class Employee
     private String fullName;
     private Date bday;
     private int ssn;
-    private boolean canServerAlc;
+    private boolean canServeAlc;
     private int ageInYears;
 
 
@@ -20,4 +20,35 @@ public class Employee
         this.bday = bday;
         this.ssn = ssn;
     }
+
+    public Employee (String firstName , String lastName , String bDay)
+    {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.bday = bday;
+    }
+
+
+    /* List of getters and setters: (I want to die)
+
+    getFirstName
+    getLastName
+    getName
+    getBday
+    getBdayString
+    getSSN
+    getSSNString
+    canServeAlc
+    getAge
+    setSSN
+
+    STATIC GETTERS AND SETTERS
+
+    static getNumberOfEmployees
+    static getEmployeesThatCanServeAlc
+     */
+
+
+
+
 }

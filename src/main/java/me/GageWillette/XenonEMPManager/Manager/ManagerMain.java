@@ -88,7 +88,7 @@ public class ManagerMain
             employeeList = new JFrame("Employee List");
             employeeList.setBounds(size.width / 2 - 350 , size.height / 2 - 350, 700 , 700);
 
-            JList empList = new JList()
+            JList empList = new JList();
 
 
             employeeList.setVisible(true);
